@@ -3,9 +3,17 @@
 import React from "react";
 // import { toast } from "react-toastify";
 
-const TaskForm = ({ handleCreateTask, name, handleInputChange }) => {
+const TaskForm = ({
+  handleCreateTask,
+  name,
+  handleInputChange,
+  updateTask,
+  isEditing,
+}) => {
   return (
-    <form onSubmit={handleCreateTask} className="space-y-2">
+    <form
+      onSubmit={isEditing ? updateTask : handleCreateTask}
+      className="space-y-2">
       <input
         type="text"
         placeholder="Add a task"
@@ -14,14 +22,12 @@ const TaskForm = ({ handleCreateTask, name, handleInputChange }) => {
         value={name}
         onChange={handleInputChange}
       />
-
       <button
-        type="submit"
-        className="bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-md py-2 px-4 w-15">
-        Add
+        className="bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-md py-2 px-4 w-15"
+        type="submit">
+        {isEditing ? "Edit" : "Add"}
       </button>
     </form>
   );
 };
-
 export default TaskForm;

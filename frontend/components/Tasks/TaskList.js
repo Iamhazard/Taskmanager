@@ -8,8 +8,10 @@ import axios from "axios";
 
 const TaskList = () => {
   const [tasks, setTasks] = useState([]);
-  const [completed, setCompletedTasks] = useState([]);
+  const [completedTasks, setCompletedTasks] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [taskID, setTaskID] = useState("");
+  const [isEditing, setIsEditing] = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -23,7 +25,7 @@ const TaskList = () => {
     try {
       const { data } = await axios.get("http://localhost:5000/api/tasks");
       setTasks(data);
-      console.log(data);
+
       setIsLoading(false);
     } catch (error) {
       toast.error(error.message);
@@ -69,7 +71,47 @@ const TaskList = () => {
       name: task.name,
       completed: false,
     });
+    setTaskID(task._id);
+    setIsEditing(true);
   };
+
+  //update and add tasK
+  const updateTask = async (e) => {
+    e.preventDefault();
+
+    if (name === "") {
+      return toast.error("Input field cannot be empty!");
+    }
+    try {
+      await axios.put(`http://localhost:5000/api/tasks/${taskID}`, formData);
+      setFormData({ ...formData, name: "" });
+      setIsEditing(false);
+      getTasks();
+    } catch (error) {
+      toast(error.message);
+    }
+  };
+
+  const setToComplete = async (task) => {
+    // console.log(task);
+    const newFormData = {
+      name: task.name,
+      completed: true,
+    };
+    try {
+      await axios.put(`${URL}/api/tasks/${task._id}`, newFormData);
+      getTasks();
+    } catch (error) {
+      toast(error.message);
+    }
+  };
+  useEffect(() => {
+    const cTask = tasks.filter((task) => {
+      return task.completed === true;
+    });
+    setCompletedTasks(cTask);
+  }, [tasks]);
+
   return (
     <div className="mx-auto px-4 py-8 max-w-xl my-2">
       <div className=" bg-white shadow-2xl rounded-lg mb-6 tracking-wide">
@@ -96,10 +138,11 @@ const TaskList = () => {
             <div className="flex  space-x-12">
               <p>
                 <b>Total task:</b>
+                {tasks.length}
               </p>
 
               <p>
-                <b className="ml-10">Completed tasks:</b>
+                <b className="ml-10">{completedTasks.length}</b>
               </p>
             </div>
 
@@ -125,6 +168,9 @@ const TaskList = () => {
                       index={index}
                       deleteTask={deleteTask}
                       getSingleTask={getSingleTask}
+                      isEditing={isEditing}
+                      updateTask={updateTask}
+                      setToComplete={setToComplete}
                     />
                   );
                 })}
