@@ -2,6 +2,7 @@
 //env file MONGO URI has link to mongo db
 const dotenv = require("dotenv").config();
 const taskRoute = require("./routes/taskRoute");
+const cors = require("cors");
 const express = require("express");
 
 //second wayy to connect database
@@ -18,7 +19,8 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.use(taskRoute);
+app.use(cors());
+app.use("/api/tasks", taskRoute);
 
 //Middleware custom
 
