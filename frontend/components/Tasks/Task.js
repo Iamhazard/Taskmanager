@@ -2,7 +2,7 @@
 import React from "react";
 import { FiEdit, FiTrash2, FiTool } from "react-icons/fi";
 
-const Task = ({ task, index, deleteTask, getSingleTask, setToComplete }) => {
+const Task = ({ task, index, deleteTask, getSinglTask, setToComplete }) => {
   return (
     <div className="relative flex items-center w-full bg-gray-300 p-4 my-2 animate-slide-in">
       <p>

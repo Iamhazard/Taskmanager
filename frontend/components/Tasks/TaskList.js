@@ -10,8 +10,9 @@ const TaskList = () => {
   const [tasks, setTasks] = useState([]);
   const [completedTasks, setCompletedTasks] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [taskID, setTaskID] = useState("");
+
   const [isEditing, setIsEditing] = useState(false);
+  const [taskID, setTaskID] = useState("");
 
   const [formData, setFormData] = useState({
     name: "",
@@ -65,6 +66,7 @@ const TaskList = () => {
       toast.error(error.message);
     }
   };
+
   //update form data
   const getSingleTask = async (task) => {
     setFormData({
@@ -92,14 +94,18 @@ const TaskList = () => {
     }
   };
 
+  //to complete tasks
+
   const setToComplete = async (task) => {
-    // console.log(task);
     const newFormData = {
       name: task.name,
       completed: true,
     };
     try {
-      await axios.put(`${URL}/api/tasks/${task._id}`, newFormData);
+      await axios.put(
+        `http://localhost:5000/api/tasks/${task._id}`,
+        newFormData
+      );
       getTasks();
     } catch (error) {
       toast(error.message);
@@ -132,6 +138,8 @@ const TaskList = () => {
               name={name}
               handleInputChange={handleInputChange}
               handleCreateTask={handleCreateTask}
+              isEditing={isEditing}
+              updateTask={updateTask}
             />
           </div>
           <div className="relative mt-8">
@@ -142,7 +150,7 @@ const TaskList = () => {
               </p>
 
               <p>
-                <b className="ml-10">{completedTasks.length}</b>
+                <b className="ml-10">Completed Tasks:{completedTasks.length}</b>
               </p>
             </div>
 

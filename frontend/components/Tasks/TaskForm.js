@@ -7,8 +7,8 @@ const TaskForm = ({
   handleCreateTask,
   name,
   handleInputChange,
-  updateTask,
   isEditing,
+  updateTask,
 }) => {
   return (
     <form
