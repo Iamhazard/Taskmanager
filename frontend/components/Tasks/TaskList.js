@@ -142,18 +142,22 @@ const TaskList = () => {
               updateTask={updateTask}
             />
           </div>
+
           <div className="relative mt-8">
-            <div className="flex  space-x-12">
-              <p>
-                <b>Total task:</b>
-                {tasks.length}
-              </p>
+            {tasks.length > 0 && (
+              <div className="flex  space-x-12">
+                <p>
+                  <b>Total task:</b>
+                  {tasks.length}
+                </p>
 
-              <p>
-                <b className="ml-10">Completed Tasks:{completedTasks.length}</b>
-              </p>
-            </div>
-
+                <p>
+                  <b className="ml-10">
+                    Completed Tasks:{completedTasks.length}
+                  </b>
+                </p>
+              </div>
+            )}
             <div className=" border h-0 w-full border-gray-600"></div>
             <hr />
             {isLoading && (
